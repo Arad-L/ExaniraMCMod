@@ -1,0 +1,130 @@
+{
+  "id": "the_missing_family",
+  "type": "side",
+  "offlineFallback": "ignore",
+  "startScene": "roadside_meeting",
+  "scenes": {
+    "roadside_meeting": {
+      "dialogue": [
+        "You encounter a man posting handwritten notices on abandoned vehicles.",
+        "Every note contains the same names.",
+        "'Have you seen my wife and daughter?'"
+      ],
+      "choices": [
+        {
+          "text": "Ask about them",
+          "nextScene": "his_story"
+        },
+        {
+          "text": "Keep moving",
+          "nextScene": "leave"
+        }
+      ]
+    },
+
+    "his_story": {
+      "dialogue": [
+        "'We got separated during an evacuation.'",
+        "'They're alive. I know they are.'",
+        "His voice never wavers."
+      ],
+      "choices": [
+        {
+          "text": "Offer to help search",
+          "nextScene": "search"
+        },
+        {
+          "text": "Ask how long he's been looking",
+          "nextScene": "search_duration"
+        }
+      ]
+    },
+
+    "search_duration": {
+      "dialogue": [
+        "'Almost three months.'",
+        "For the first time, uncertainty enters his voice."
+      ],
+      "choices": [
+        {
+          "text": "Help search anyway",
+          "nextScene": "search"
+        }
+      ]
+    },
+
+    "search": {
+      "dialogue": [
+        "You spend hours checking locations he remembers.",
+        "Most lead nowhere.",
+        "One abandoned shelter contains an old registration log."
+      ],
+      "choices": [
+        {
+          "text": "Read the log",
+          "requires": { "intelligence": 3 },
+          "checkType": "hard",
+          "nextScene": "discover_truth",
+          "lockedText": "The damaged pages are difficult to understand."
+        },
+        {
+          "text": "Show him the log",
+          "nextScene": "give_log"
+        }
+      ]
+    },
+
+    "discover_truth": {
+      "dialogue": [
+        "The names are there.",
+        "Next to both is a simple note.",
+        "'Deceased.'"
+      ],
+      "choices": [
+        {
+          "text": "Tell him the truth",
+          "nextScene": "truth"
+        },
+        {
+          "text": "Hide what you found",
+          "nextScene": "hope"
+        }
+      ]
+    },
+
+    "give_log": {
+      "dialogue": [
+        "He studies the pages for a long time.",
+        "Eventually he closes the book.",
+        "'Thank you for helping.'"
+      ],
+      "choices": []
+    },
+
+    "truth": {
+      "dialogue": [
+        "He says nothing for several minutes.",
+        "Then he quietly removes the remaining notices from his backpack.",
+        "'I think I knew already.'"
+      ],
+      "choices": []
+    },
+
+    "hope": {
+      "dialogue": [
+        "You tell him nothing.",
+        "The search continues.",
+        "Tomorrow he'll put up more notices."
+      ],
+      "choices": []
+    },
+
+    "leave": {
+      "dialogue": [
+        "You leave him behind.",
+        "When you look back, he's still posting notices."
+      ],
+      "choices": []
+    }
+  }
+}
