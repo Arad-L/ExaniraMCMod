@@ -12,12 +12,13 @@ No main story forced-join. No global story flags. Multiplayer side events only.
 | 3.2 | `successEvent` cross-event chain | 🟢 Complete | Choices with no `nextScene` can set `successEvent`; `endEvent()` calls `startEvent()` on chain |
 | 3.3 | Multi-scene event structure | 🟢 Complete | Events are `Map<sceneId, EventScene>`; `nextScene` field advances within event; terminal scenes auto-dismiss |
 | 3.4 | Offline auto-resolve + persist | 🟢 Complete | `PendingEventAttachment` (player NBT) stores `eventId` + `currentSceneId`; `resyncPlayerIfMidEvent()` reconstructs in-memory state on login; per-world automatically via `playerdata/` isolation |
-| 3.5 | Temporary party formation | 🔴 Not started | Multiple players start the same event → share one `ActiveEvent` instance; all see the same dialogue |
+| 3.5 | Temporary party formation | 🔴 Not started | Multiple players start the same event → share one `ActiveEvent` instance; all see the same dialogue | Players party up by invite from the player who got the event on their walkie, blocked if the invitee is already in an event
 | 3.6 | Shared decision / party vote UI | 🔴 Not started | All party members vote; majority wins (or unanimity required — TBD); vote UI in `EventScreen` |
 | 3.7 | Party vote packet | 🔴 Not started | `PartyVotePacket` C→S; server collects votes, resolves when all members have voted |
 | 3.8 | Vote result broadcast | 🔴 Not started | Server broadcasts chosen option + result to all party members via `EventStartPacket` (next scene) |
 | 3.9 | Event lock release on logout mid-party | 🔴 Not started | If a party member logs out, their vote auto-resolves via `offlineFallback`; remaining members continue |
 | 3.10 | End-to-end multiplayer test | 🔴 Not started | Two players, same event, vote on a choice, verify both see scene advance |
+| 3.11 | Review any files with the line "MADE USING CHATGPT, REVIEW USING CLAUDE" and update them in line with Claude Sonnet 4.6 (the AI reviewing this)'s structure and programming expertise |
 
 ---
 
