@@ -12,12 +12,45 @@ No main story forced-join. No global story flags. Multiplayer side events only.
 | 3.2 | `successEvent` cross-event chain | 🟢 Complete | Choices with no `nextScene` can set `successEvent`; `endEvent()` calls `startEvent()` on chain |
 | 3.3 | Multi-scene event structure | 🟢 Complete | Events are `Map<sceneId, EventScene>`; `nextScene` field advances within event; terminal scenes auto-dismiss |
 | 3.4 | Offline auto-resolve + persist | 🟢 Complete | `PendingEventAttachment` (player NBT) stores `eventId` + `currentSceneId`; `resyncPlayerIfMidEvent()` reconstructs in-memory state on login; per-world automatically via `playerdata/` isolation |
-| 3.5 | Temporary party formation | 🔴 Not started | Multiple players start the same event → share one `ActiveEvent` instance; all see the same dialogue | Players party up by invite from the player who got the event on their walkie, blocked if the invitee is already in an event
-| 3.6 | Shared decision / party vote UI | 🔴 Not started | All party members vote; majority wins (or unanimity required — TBD); vote UI in `EventScreen` |
-| 3.7 | Party vote packet | 🔴 Not started | `PartyVotePacket` C→S; server collects votes, resolves when all members have voted |
-| 3.8 | Vote result broadcast | 🔴 Not started | Server broadcasts chosen option + result to all party members via `EventStartPacket` (next scene) |
+| 3.5 | Temporary party formation | 🟡 In Progress | Players party up by invite from the player who got the event on their walkie, can only invite from the first scene, invitation must be ACCEPTED, blocked if the invitee is already in an event | Multiple players start the same event → share one `ActiveEvent` instance; all stay on the same scene | 
+| 3.6 | Shared decision / party vote UI | 🟡 In Progress | All party members vote; majority wins; once all players vote then they are all taken to the next scene based on majority; vote UI in `EventScreen` |
+| 3.7 | Party vote packet | 🟢 Complete | `PartyVotePacket` C→S: instanceKey + choiceIndex (player's vote) created |
+| 3.8 | Vote result broadcast | 🟡 In Progress | Server broadcasts chosen option + result to all party members via new `PartyVoteStatePacket` |
 | 3.9 | Event lock release on logout mid-party | 🔴 Not started | If a party member logs out, their vote auto-resolves via `offlineFallback`; remaining members continue |
 | 3.10 | End-to-end multiplayer test | 🔴 Not started | Two players, same event, vote on a choice, verify both see scene advance |
+
+---
+
+## What's been implemented
+
+The following files have been created to support the party voting system:
+
+- **network/PartyVotePacket.java** - Client-to-server packet for transmitting player votes in party events
+- **network/PartyVoteStatePacket.java** - Server-to-client packet for broadcasting current vote states to all party members  
+- **event/VoteCollector.java** - Server-side component that collects votes, tracks participation, and resolves voting outcomes
+
+These files implement the core networking infrastructure needed for multiplayer event voting. The VoteCollector handles:
+- Creating vote collections for each active party event
+- Recording individual player votes 
+- Resolving votes using majority rule (or other configured rules)
+- Broadcasting current vote states to all participants in real-time
+- Cleaning up when events are resolved
+
+---
+
+## What comes next
+
+Based on the implementation plan, here's what needs to be done:
+
+1. **Integrate party formation logic** - Implement command handling for inviting players to join an event (e.g., `/exanira event invite <player>`)
+2. **Update EventQueueManager.startEvent()** - Modify this method to check if a player is trying to start an event that another player already started, and add the new player to the existing party
+3. **Implement vote handling in EventChoiceHandler** - Process PartyVotePacket when received from clients
+4. **Enhance EventScreen UI** - Update the client-side UI to show other players' votes during voting periods
+5. **Handle event lock release on logout** - Implement logic for when a party member disconnects mid-event
+6. **Implement party formation trigger decisions** - Address design questions about how parties are formed (all nearby? all online? named group?)
+7. **Add end-to-end multiplayer testing** - Test the full flow with multiple players
+
+The system is now ready to be integrated into the existing event handling pipeline, building upon the already-established scaffolding in `ActiveEvent.participants` and `EventQueueManager.playerToEvent`.
 | 3.11 | Review any files with the line "MADE USING CHATGPT, REVIEW USING CLAUDE" and update them in line with Claude Sonnet 4.6 (the AI reviewing this)'s structure and programming expertise |
 
 ---
