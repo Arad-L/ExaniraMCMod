@@ -66,6 +66,13 @@ runs {
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
     }
 
+    client2 {
+        configure(runs.client)
+
+        argument '--username'
+        argument 'Bob'
+    }
+
     server {
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         argument '--nogui'
