@@ -1,7 +1,6 @@
 # Phase 3 Execution — Multiplayer Logic
 
-**Goal**: Multiple players can share the same event instance, decisions are resolved as a group vote, the event lock system is enforced with visible feedback, and the `successEvent` cross-event chain is fully functional.  
-No main story forced-join. No global story flags. Multiplayer side events only.
+**Goal**: Multiple players can share the same event instance when one invites another, decisions are resolved as a group vote, the event lock system is enforced with visible feedback, and the `successEvent` cross-event chain is fully functional.  
 
 **Status**: 🟡 In Progress — event locking + successEvent chain completed in Phase 2 continuation; party formation and vote UI not yet built
 
@@ -43,15 +42,13 @@ These files implement the core networking infrastructure needed for multiplayer 
 Based on the implementation plan, here's what needs to be done:
 
 1. **Integrate party formation logic** - Implement command handling for inviting players to join an event (e.g., `/exanira event invite <player>`)
-2. **Update EventQueueManager.startEvent()** - Modify this method to check if a player is trying to start an event that another player already started, and add the new player to the existing party
-3. **Implement vote handling in EventChoiceHandler** - Process PartyVotePacket when received from clients
-4. **Enhance EventScreen UI** - Update the client-side UI to show other players' votes during voting periods
-5. **Handle event lock release on logout** - Implement logic for when a party member disconnects mid-event
-6. **Implement party formation trigger decisions** - Address design questions about how parties are formed (all nearby? all online? named group?)
-7. **Add end-to-end multiplayer testing** - Test the full flow with multiple players
+2. **Implement vote handling in EventChoiceHandler** - Process PartyVotePacket when received from clients
+3. **Enhance EventScreen UI** - Update the client-side UI to show other players' votes during voting periods
+4. **Handle event lock release on logout** - Implement logic for when a party member disconnects mid-event
+5. **Add end-to-end multiplayer testing** - Test the full flow with multiple players
 
 The system is now ready to be integrated into the existing event handling pipeline, building upon the already-established scaffolding in `ActiveEvent.participants` and `EventQueueManager.playerToEvent`.
-| 3.11 | Review any files with the line "MADE USING CHATGPT, REVIEW USING CLAUDE" and update them in line with Claude Sonnet 4.6 (the AI reviewing this)'s structure and programming expertise |
+IGNORE FOR NOW: | 3.11 | Review any files with the line "MADE USING CHATGPT, REVIEW USING CLAUDE" and update them in line with Claude Sonnet 4.6 (the AI reviewing this)'s structure and programming expertise |
 
 ---
 
@@ -59,8 +56,6 @@ The system is now ready to be integrated into the existing event handling pipeli
 
 | Question | Options | Status |
 |---|---|---|
-| Party formation trigger | `/exanira event start <id>` targets a party (all nearby? all online? named group?) | ❓ Undecided |
-| Vote resolution rule | Majority wins vs. unanimous vs. first-to-vote | ❓ Undecided |
 | Tie-break | Random pick vs. lowest-stat option vs. wait for timeout | ❓ Undecided |
 | Max party size | Capped (e.g. 4) or unlimited? | ❓ Undecided |
 
